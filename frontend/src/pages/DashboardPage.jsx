@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import toast from 'react-hot-toast';
 
@@ -13,6 +13,12 @@ export const DashboardPage = () => {
     navigate('/login');
   };
 
+  const menuItems = [
+    { label: '📊 Dashboard', href: '/dashboard' },
+    { label: '👥 Clients', href: '/clients' },
+    { label: '📁 Projects', href: '/projects' },
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
       {/* Top Navigation */}
@@ -20,9 +26,9 @@ export const DashboardPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <h1 className="text-2xl font-bold text-indigo-600">Digital Agency</h1>
-            <div className="flex items-center gap-4">
-              <span className="text-gray-700 dark:text-gray-300">
-                Welcome, <strong>{user?.firstName} {user?.lastName}</strong>
+            <div className="flex items-center gap-6">
+              <span className="text-gray-700 dark:text-gray-300 text-sm">
+                Welcome, <strong>{user?.firstName}</strong>
               </span>
               <button
                 onClick={handleLogout}
@@ -37,35 +43,45 @@ export const DashboardPage = () => {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="bg-white dark:bg-gray-900 rounded-lg shadow-lg p-8">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-            Welcome to Dashboard!
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-            {/* User Info Card */}
-            <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 dark:from-indigo-900 dark:to-indigo-800 p-6 rounded-lg">
-              <h3 className="text-lg font-semibold text-indigo-900 dark:text-indigo-100 mb-4">
-                Your Profile
+        {/* Menu Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          {menuItems.map((item) => (
+            <Link
+              key={item.href}
+              to={item.href}
+              className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 hover:shadow-xl transition transform hover:-translate-y-1"
+            >
+              <div className="text-4xl mb-4">{item.label.split(' ')[0]}</div>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                {item.label.split(' ')[1]}
               </h3>
-              <div className="space-y-2 text-indigo-800 dark:text-indigo-200">
-                <p><strong>Email:</strong> {user?.email}</p>
-                <p><strong>Name:</strong> {user?.firstName} {user?.lastName}</p>
-                <p><strong>Role:</strong> {user?.role}</p>
-                {user?.department && <p><strong>Department:</strong> {user?.department}</p>}
+              <p className="text-gray-500 dark:text-gray-400 mt-2">Manage your {item.label.split(' ')[1].toLowerCase()}</p>
+            </Link>
+          ))}
+        </div>
+
+        {/* User Info Card */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Your Profile</h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-indigo-50 dark:bg-indigo-900 p-6 rounded-lg">
+              <h3 className="font-semibold text-indigo-900 dark:text-indigo-100 mb-4">Account Details</h3>
+              <div className="space-y-2 text-indigo-800 dark:text-indigo-200 text-sm">
+                <p><span className="font-medium">Name:</span> {user?.firstName} {user?.lastName}</p>
+                <p><span className="font-medium">Email:</span> {user?.email}</p>
+                <p><span className="font-medium">Role:</span> {user?.role}</p>
+                {user?.department && <p><span className="font-medium">Department:</span> {user?.department}</p>}
               </div>
             </div>
 
-            {/* Quick Stats Card */}
-            <div className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900 dark:to-purple-800 p-6 rounded-lg">
-              <h3 className="text-lg font-semibold text-purple-900 dark:text-purple-100 mb-4">
-                Quick Start
-              </h3>
-              <ul className="space-y-2 text-purple-800 dark:text-purple-200">
-                <li>✨ Phase 2: Authentication Complete</li>
-                <li>📅 Next: Core Data Models & CRUD</li>
-                <li>🚀 Building Full-Stack Features</li>
-                <li>🎯 TIER 1 & 2 Implementation</li>
+            <div className="bg-purple-50 dark:bg-purple-900 p-6 rounded-lg">
+              <h3 className="font-semibold text-purple-900 dark:text-purple-100 mb-4">Quick Start</h3>
+              <ul className="space-y-2 text-purple-800 dark:text-purple-200 text-sm">
+                <li>✨ Phase 3: Core Data Models Complete</li>
+                <li>📊 Clients Management Available</li>
+                <li>📁 Projects Management Available</li>
+                <li>🔄 React Query Data Caching Enabled</li>
               </ul>
             </div>
           </div>
@@ -73,18 +89,17 @@ export const DashboardPage = () => {
           {/* Features Coming Soon */}
           <div className="mt-8 p-6 bg-blue-50 dark:bg-blue-900 border border-blue-200 dark:border-blue-700 rounded-lg">
             <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-4">
-              🔧 Features Coming in Next Phases
+              🚀 Features Coming Next
             </h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              <div>📊 Dashboard Analytics</div>
-              <div>👥 Client Management</div>
-              <div>📁 Project Tracking</div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-blue-800 dark:text-blue-200">
               <div>⏱️ Time Tracking</div>
               <div>💰 Invoicing</div>
+              <div>✅ Task Management</div>
               <div>💬 Team Chat</div>
-              <div>🔔 Real-time Notifications</div>
-              <div>✅ Approvals Workflow</div>
-              <div>📈 Advanced Analytics</div>
+              <div>🔔 Notifications</div>
+              <div>📋 Approvals</div>
+              <div>📊 Analytics</div>
+              <div>📈 Reports</div>
             </div>
           </div>
         </div>
