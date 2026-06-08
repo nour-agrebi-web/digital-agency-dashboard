@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: digital_agency_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: digital_agency_db
+      MYSQL_USER: agency
+      MYSQL_PASSWORD: agency_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: digital_agency_backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/digital_agency_db
+      SPRING_DATASOURCE_USERNAME: agency
+      SPRING_DATASOURCE_PASSWORD: agency_password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+      JWT_SECRET: your_super_secret_key_that_must_be_at_least_32_characters_long
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: digital_agency_frontend
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_BASE_URL: http://localhost:8080
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  default:
+    name: digital-agency-network

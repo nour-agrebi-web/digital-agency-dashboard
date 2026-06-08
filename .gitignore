@@ -1,0 +1,58 @@
+# Backend
+backend/target/
+backend/.idea/
+backend/.vscode/
+backend/*.iml
+backend/.DS_Store
+backend/logs/
+backend/.mvn/wrapper/maven-wrapper.jar
+backend/mvnw
+backend/mvnw.cmd
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.env.local
+frontend/.env.*.local
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/.idea/
+frontend/.vscode/
+frontend/*.iml
+frontend/.DS_Store
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Database
+*.sql
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Lock files (optional, depending on team preference)
+# frontend/package-lock.json
+# backend/pom.xml.bak
